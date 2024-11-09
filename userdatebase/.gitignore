@@ -1,0 +1,10 @@
+# .gitignore
+.env
+
+# Ignore backup files
+/backups/
+*.backup
+*.backup.gz
+*.dump
+*.sql
+*.gz
