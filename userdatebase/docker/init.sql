@@ -26,6 +26,7 @@ CREATE TRIGGER update_users_modtime
 CREATE INDEX idx_users_email ON users(email);
 CREATE INDEX idx_users_name ON users(name);
 
+
 -- เพิ่มข้อมูลตัวอย่าง
 INSERT INTO users (name, email) VALUES 
     ('ณัฐโชติ พรหมฤทธิ์', 'nuttachot@example.com'),

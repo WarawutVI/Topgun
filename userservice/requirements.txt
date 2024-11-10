@@ -1,5 +1,4 @@
 # requirements.txt
-
 Flask==2.3.2
 Flask-HTTPAuth==4.8.0
 Flask-CORS==3.0.10

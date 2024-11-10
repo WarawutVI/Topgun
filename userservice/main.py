@@ -13,14 +13,24 @@ DB_HOST = os.getenv("DB_HOST", "localhost")  # ค่าเริ่มต้น
 DB_PORT = os.getenv("DB_PORT", "5432")       # ค่าเริ่มต้นคือ 5432
 API_TOKEN = os.getenv("API_TOKEN")
 
+
+
+
 # สร้าง Flask app
 app = Flask(__name__)
+
+
 
 # ตั้งค่า CORS
 CORS(app, resources={r"/api/v1/*": {"origins": "http://localhost:3000"}})
 
+
+
 # สร้าง authentication instance
 auth = HTTPTokenAuth(scheme='Bearer')
+
+
+
 
 # ฟังก์ชันตรวจสอบ token
 @auth.verify_token
@@ -38,9 +48,18 @@ def get_db_connection():
     )
     return conn
 
+
+
+
+
+
 # สร้าง API Blueprint สำหรับ version 1
 from flask import Blueprint
 api_v1 = Blueprint('api_v1', __name__, url_prefix='/api/v1')
+
+
+
+
 
 # Routes ภายใต้ Blueprint api_v1
 @api_v1.route('/users', methods=['GET'])
@@ -56,6 +75,8 @@ def get_users():
     users_list = [dict(user) for user in users]
     return jsonify(users_list)
 
+
+
 @api_v1.route('/users/<int:user_id>', methods=['GET'])
 @auth.login_required
 def get_user(user_id):
@@ -69,6 +90,11 @@ def get_user(user_id):
     if not user:
         abort(404, description="ไม่พบผู้ใช้")
     return jsonify(dict(user))
+
+
+
+
+
 
 @api_v1.route('/users', methods=['POST'])
 @auth.login_required
@@ -102,6 +128,9 @@ def create_user():
     cursor.close()
     conn.close()
     return jsonify(dict(new_user)), 201
+
+
+
 
 @api_v1.route('/users/<int:user_id>', methods=['PUT'])
 @auth.login_required
@@ -143,6 +172,9 @@ def update_user(user_id):
     conn.close()
     return jsonify(dict(updated_user))
 
+
+
+
 @api_v1.route('/users/<int:user_id>', methods=['DELETE'])
 @auth.login_required
 def delete_user(user_id):
@@ -167,6 +199,10 @@ def delete_user(user_id):
     conn.close()
     return jsonify({"message": "ลบผู้ใช้สำเร็จ"})
 
+
+
+
+
 # Health check route ที่ระดับ root (นอก blueprint)
 @app.route('/health', methods=['GET'])
 def health_check():
@@ -181,6 +217,10 @@ def health_check():
         return jsonify({"status": "healthy", "database": "connected"})
     except Exception:
         abort(503, description="Database connection failed")
+
+
+
+
 
 # ลงทะเบียน Blueprint
 app.register_blueprint(api_v1)
