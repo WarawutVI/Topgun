@@ -4,14 +4,14 @@
 services:
   db:
     build: ./docker
-    container_name: user_postgres
+    container_name: data_postgres
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./backups:/backups  # volume สำหรับเก็บไฟล์ backup
+     
     ports:
       - "${POSTGRES_PORT}:5432"
     networks:
@@ -25,7 +25,7 @@ services:
 
   pgadmin:
     image: dpage/pgadmin4
-    container_name: user_pgadmin
+    container_name: admin_pgadmin
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
@@ -39,22 +39,7 @@ services:
     depends_on:
       - db
 
-  backup:
-    build: ./backup
-    container_name: postgres_backup
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_HOST: db
-      BACKUP_RETENTION_DAYS: 7  # เก็บ backup ไว้ 7 วัน
-      BACKUP_SCHEDULE: "0 0 * * *"  # ทำ backup ทุกวันเวลาเที่ยงคืน
-    volumes:
-      - ./backups:/backups
-    networks:
-      - database_network
-    depends_on:
-      - db
+ 
 
 networks:
   database_network:

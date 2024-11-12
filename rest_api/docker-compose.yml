@@ -19,3 +19,4 @@ services:
       retries: 3
       start_period: 5s
     restart: unless-stopped  # จะรีสตาร์ท container อัตโนมัติถ้า health check ไม่ผ่าน
+
